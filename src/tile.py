@@ -22,7 +22,7 @@ class Tile:
     def resetValue(self):
         self.value = constants.TILE_DEFAULT_VALUE
     
-    def draw(self, screen):
+    def draw(self, screen: pygame.Surface):
         pygame.draw.rect(screen, self.getColour(), self.rect)
        
     def getColour(self) -> tuple[int, int, int]:
