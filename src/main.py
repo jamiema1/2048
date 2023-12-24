@@ -17,35 +17,18 @@ screen: pygame.Surface = pygame.display.set_mode((CONSTANTS.SCREEN_WIDTH, CONSTA
 
 
 board: Board.Board = Board.Board(CONSTANTS.TILE_COUNT)
- 
-        
+
 def gameloop():
     board.resetBoard() 
-    # board.addTile() 
-    # grid[0][0].setValue(2)
-    # grid[0][1].setValue(2)
-    # # grid[0][2].setValue(2)
-    board.setTileValue(3,0,2)
+    board.addTile()
     
     run: bool = True
     prevKey: int = None
     while run:
-    
+        
         screen.fill(CONSTANTS.SCREEN_COLOUR)
         
-        board.draw(screen)    
-        
-        # key = pygame.key.get_pressed()
-        
-        # if key[pygame.K_r] == True:
-        #     resetGrid(grid)
-        #     addTile(grid)
-        # elif key[pygame.K_d] == True:
-        #     moveRight(grid)
-        # elif key[pygame.K_a] == True:
-        #     addTile(grid)
-            
-        
+        board.draw(screen)
                 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -53,7 +36,7 @@ def gameloop():
             elif event.type == pygame.KEYUP:
                 prevKey = None
             elif event.type == pygame.KEYDOWN:
-                isTileMove: bool
+                isTileMove: bool = False
                 if event.key == pygame.K_w and prevKey != pygame.K_w:
                     isTileMove = board.moveUp() 
                     prevKey = pygame.K_w
