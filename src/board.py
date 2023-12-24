@@ -15,6 +15,9 @@ class Board:
     def getBoard(self) -> list[list[Tile.Tile]]:
         return self.board
     
+    def getTile(self, x: int, y: int) -> Tile.Tile:
+        return self.board[y][x]
+    
     def getTileValue(self, x: int, y: int) -> int:
         return self.board[y][x].getValue()
         
@@ -47,84 +50,90 @@ class Board:
         
     def moveRight(self) -> bool:
     
-        tileMove: bool = False
+        isTileMove: bool = False
         
-        for y, row in enumerate(self.board):
+        for y in range(CONSTANTS.TILE_COUNT):
             
-            emptySpot: int = len(row) - 1
-            currentTile: Tile.Tile
-            nextTile: Tile.Tile
-            newValue: int
-                    
-            for x in reversed(range(len(row))):
+            emptySpot: int = CONSTANTS.TILE_COUNT - 1
                 
-                nextTile = None
-                currentTile = row[x]
+            for x in reversed(range(CONSTANTS.TILE_COUNT)):
                 
-                if currentTile.getValue() == CONSTANTS.TILE_DEFAULT_VALUE:
+                currentTile: Tile.Tile = self.getTile(x,y)
+                currentTileValue: int = self.getTileValue(x,y)
+                nextTile: Tile.Tile = None
+                nextTileValue: int = CONSTANTS.TILE_DEFAULT_VALUE
+                newValue: int = CONSTANTS.TILE_DEFAULT_VALUE
+    
+                # Skip if current Tile is Empty
+                if currentTileValue == CONSTANTS.TILE_DEFAULT_VALUE:
                     continue
                 
+                # Find next Non-Empty Tile
                 for x2 in reversed(range(x)):
-                    if row[x2].getValue() == CONSTANTS.TILE_DEFAULT_VALUE:
-                        continue
-                    nextTile = row[x2]
-                    break
-                
-                if (nextTile is not None and currentTile.getValue() == nextTile.getValue()):
-                    newValue = currentTile.getValue() + nextTile.getValue()
-                    nextTile.resetValue()
+                    if self.getTileValue(x2, y) != CONSTANTS.TILE_DEFAULT_VALUE:
+                        nextTile = self.getTile(x2,y)
+                        nextTileValue = nextTile.getValue()
+                        break
+                    
+                merge: bool = nextTile is not None and currentTileValue == nextTileValue
+                slide: bool = x != emptySpot
+                if (merge or slide):
+                    if (merge):
+                        newValue = nextTileValue
+                        nextTile.resetValue()
+                    newValue += currentTileValue
                     currentTile.resetValue()
-                    row[emptySpot].setValue(newValue)
-                    tileMove = True
-                elif (x != emptySpot):
-                    newValue = currentTile.getValue()
-                    currentTile.resetValue()
-                    row[emptySpot].setValue(newValue)
-                    tileMove = True
+                    self.setTileValue(emptySpot, y, newValue)
+                    isTileMove = True
+                    
                 emptySpot -= 1
                 
-        return tileMove
+        return isTileMove
                 
                 
     def moveLeft(self) -> bool:
         
-        tileMove: bool = False
+        isTileMove: bool = False
         
-        for y, row in enumerate(self.board):
+        for y in range(CONSTANTS.TILE_COUNT):
             
             emptySpot: int = 0
-            currentTile: Tile.Tile
-            nextTile: Tile.Tile
-            newValue: int
             
-            for x in range(len(row)):
-                print(emptySpot, x)
-                nextTile = None
-                currentTile = row[x]
+            for x in range(CONSTANTS.TILE_COUNT):
                 
-                print(currentTile)
-                print(currentTile.getValue())
-                if currentTile.getValue() == CONSTANTS.TILE_DEFAULT_VALUE:
+                currentTile: Tile.Tile = self.getTile(x,y)
+                currentTileValue: int = self.getTileValue(x,y)
+                nextTile: Tile.Tile = None
+                nextTileValue: int = CONSTANTS.TILE_DEFAULT_VALUE
+                newValue: int = CONSTANTS.TILE_DEFAULT_VALUE
+                
+                if currentTileValue == CONSTANTS.TILE_DEFAULT_VALUE:
                     continue
                 
-                for x2 in range(x + 1, len(row)):
-                    if row[x2].getValue() == CONSTANTS.TILE_DEFAULT_VALUE:
-                        continue
-                    nextTile = row[x2]
-                    break
+                for x2 in range(x + 1, CONSTANTS.TILE_COUNT):
+                    if self.getTileValue(x2, y) != CONSTANTS.TILE_DEFAULT_VALUE:
+                        nextTile = self.getTile(x2, y)
+                        nextTileValue = nextTile.getValue()
+                        break
                 
-                if (nextTile is not None and currentTile.getValue() == nextTile.getValue()):
-                    newValue = currentTile.getValue() + nextTile.getValue()
-                    nextTile.resetValue()
+                merge: bool = nextTile is not None and currentTileValue == nextTileValue
+                slide: bool = x != emptySpot
+                if (merge or slide):
+                    if (merge):
+                        newValue = nextTileValue
+                        nextTile.resetValue()
+                    newValue += currentTileValue
                     currentTile.resetValue()
-                    row[emptySpot].setValue(newValue)
-                    tileMove = True
-                elif (x != emptySpot):
-                    newValue = currentTile.getValue()
-                    currentTile.resetValue()
-                    row[emptySpot].setValue(newValue)
-                    tileMove = True
+                    self.setTileValue(emptySpot, y, newValue)
+                    isTileMove = True
+                    
                 emptySpot += 1
 
-        return tileMove
+        return isTileMove
        
+    def moveUp(self) -> bool:
+        return True
+    
+    
+    def moveDown(self) -> bool:
+        return True

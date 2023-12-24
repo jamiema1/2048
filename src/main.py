@@ -53,21 +53,27 @@ def gameloop():
             elif event.type == pygame.KEYUP:
                 prevKey = None
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_a and prevKey != pygame.K_a:
-                    if board.moveLeft():   
-                        board.addTile()
+                isTileMove: bool
+                if event.key == pygame.K_w and prevKey != pygame.K_w:
+                    isTileMove = board.moveUp() 
+                    prevKey = pygame.K_w
+                elif event.key == pygame.K_a and prevKey != pygame.K_a:
+                    isTileMove = board.moveLeft() 
                     prevKey = pygame.K_a
-                if event.key == pygame.K_d and prevKey != pygame.K_d:
-                    if board.moveRight():   
-                        board.addTile()
+                elif event.key == pygame.K_s and prevKey != pygame.K_s:
+                    isTileMove = board.moveDown() 
+                    prevKey = pygame.K_s
+                elif event.key == pygame.K_d and prevKey != pygame.K_d:
+                    isTileMove = board.moveRight()
                     prevKey = pygame.K_d
-                if event.key == pygame.K_r and prevKey != pygame.K_r:
+                elif event.key == pygame.K_r and prevKey != pygame.K_r:
                     board.resetBoard()
                     board.addTile()
                     prevKey = pygame.K_r
-                if event.key == pygame.K_q and prevKey != pygame.K_q:
+                    
+                if (isTileMove is True):
                     board.addTile()
-                    prevKey = pygame.K_q
+                    
                     
                 
         clock.tick(CONSTANTS.FPS)
