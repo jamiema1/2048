@@ -19,11 +19,13 @@ screen: pygame.Surface = pygame.display.set_mode((CONSTANTS.SCREEN_WIDTH, CONSTA
 board: Board.Board = Board.Board(CONSTANTS.TILE_COUNT)
 
 def gameloop():
+    
     board.resetBoard() 
     board.addTile()
     
     run: bool = True
     prevKey: int = None
+    
     while run:
         
         screen.fill(CONSTANTS.SCREEN_COLOUR)

@@ -1,6 +1,6 @@
 import unittest
-import moveRightTestCase as MoveRightTestCase
-import moveLeftTestCase as MoveLeftTestCase
+import test_move_right as MoveRightTestCase
+import test_move_left as MoveLeftTestCase
 
 
 def suite():

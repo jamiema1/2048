@@ -6,11 +6,15 @@ import pygame
 class Board:
     
     def __init__(self, size: int):
+        self.score: int = 0
         self.board: list[list[Tile.Tile]] = [ [None]*size for i in range(size)]
         self.rect = pygame.Rect((CONSTANTS.BOARD_X, 
                                  CONSTANTS.BOARD_Y, 
                                  CONSTANTS.BOARD_SIZE,
                                  CONSTANTS.BOARD_SIZE))
+    
+    def getScore(self) -> int:
+        return self.score
     
     def getBoard(self) -> list[list[Tile.Tile]]:
         return self.board
@@ -27,12 +31,16 @@ class Board:
     def draw(self, screen: pygame.Surface):
         pygame.draw.rect(screen, CONSTANTS.BOARD_COLOUR, self.rect)
         
+        font = pygame.font.SysFont("segoeuisemibold", 48)
+        img = font.render(str(self.score), True, (100, 100, 100))
+        screen.blit(img, (CONSTANTS.SCORE_CENTER_X - img.get_width() / 2, CONSTANTS.SCORE_CENTER_Y - img.get_height() / 2))
         
         for y in range(CONSTANTS.TILE_COUNT):
             for x in range(CONSTANTS.TILE_COUNT):
                 self.board[y][x].draw(screen)
     
     def resetBoard(self):
+        self.score = 0
         for y, row in enumerate(self.board):
             for x in range(len(row)):
                 self.board[y][x] = Tile.Tile(CONSTANTS.TILE_DEFAULT_VALUE, x, y)
@@ -106,6 +114,8 @@ class Board:
                     currentTile.resetValue()
                     self.setTileValue(emptySpot, y, newValue)
                     isTileMove = True
+                    if (merge):
+                        self.score += newValue
                     
                 emptySpot -= 1
                 
@@ -146,6 +156,8 @@ class Board:
                     currentTile.resetValue()
                     self.setTileValue(emptySpot, y, newValue)
                     isTileMove = True
+                    if (merge):
+                        self.score += newValue
                     
                 emptySpot += 1
 
@@ -188,6 +200,8 @@ class Board:
                     currentTile.resetValue()
                     self.setTileValue(x, emptySpot, newValue)
                     isTileMove = True
+                    if (merge):
+                        self.score += newValue
                     
                 emptySpot += 1
                 
@@ -230,6 +244,8 @@ class Board:
                     currentTile.resetValue()
                     self.setTileValue(x, emptySpot, newValue)
                     isTileMove = True
+                    if (merge):
+                        self.score += newValue
                     
                 emptySpot -= 1
                 
