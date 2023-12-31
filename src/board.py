@@ -29,17 +29,37 @@ class Board:
         self.board[y][x].setValue(value)
     
     def draw(self, screen: pygame.Surface):
+        
+        # Background
         pygame.draw.rect(screen, CONSTANTS.BOARD_COLOUR, self.rect)
         
+        # Score Text
+        font = pygame.font.SysFont("segoeuisemibold", 32)
+        img = font.render("Score", True, (100, 100, 100))
+        screen.blit(img, (CONSTANTS.SCORE_CENTER_X - img.get_width() / 2, CONSTANTS.SCORE_TEXT_CENTER_Y - img.get_height() / 2))
+        
+        # Score Value
         font = pygame.font.SysFont("segoeuisemibold", 48)
         img = font.render(str(self.score), True, (100, 100, 100))
         screen.blit(img, (CONSTANTS.SCORE_CENTER_X - img.get_width() / 2, CONSTANTS.SCORE_CENTER_Y - img.get_height() / 2))
         
+        # High Score Text
+        font = pygame.font.SysFont("segoeuisemibold", 32)
+        img = font.render("High Score", True, (100, 100, 100))
+        screen.blit(img, (CONSTANTS.HIGH_SCORE_CENTER_X - img.get_width() / 2, CONSTANTS.SCORE_TEXT_CENTER_Y - img.get_height() / 2))
+        
+        # High Score Value
+        font = pygame.font.SysFont("segoeuisemibold", 48)
+        img = font.render(str(self.highScore), True, (100, 100, 100))
+        screen.blit(img, (CONSTANTS.HIGH_SCORE_CENTER_X - img.get_width() / 2, CONSTANTS.SCORE_CENTER_Y - img.get_height() / 2))
+        
+        # Tiles
         for y in range(CONSTANTS.TILE_COUNT):
             for x in range(CONSTANTS.TILE_COUNT):
                 self.board[y][x].draw(screen)
     
     def resetBoard(self):
+        self.updateHighScore()
         self.score = 0
         for y, row in enumerate(self.board):
             for x in range(len(row)):
@@ -59,7 +79,7 @@ class Board:
                 tile.setValue(pow(2, value))
                 return
         
-    def isFull(self):
+    def isFull(self) -> bool:
         
         for x in range(CONSTANTS.TILE_COUNT):
             for y in range(CONSTANTS.TILE_COUNT - 1):
@@ -77,6 +97,17 @@ class Board:
         
         return True
         
+    def updateHighScore(self):
+        scoreFile = open("./src/score.txt", "r")
+        self.highScore = int(scoreFile.readline())
+        scoreFile.close()
+        if (self.score > self.highScore):
+            self.highScore = self.score
+            scoreFile = open("./src/score.txt", "w")
+            scoreFile.write(str(self.score))
+            scoreFile.close()
+            
+    
     def moveRight(self) -> bool:
     
         isTileMove: bool = False

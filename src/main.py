@@ -30,6 +30,7 @@ def gameloop():
         
         screen.fill(CONSTANTS.SCREEN_COLOUR)
         
+        board.updateHighScore()
         board.draw(screen)
                 
         for event in pygame.event.get():
