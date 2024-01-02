@@ -25,8 +25,8 @@ class Tile:
 
         pygame.draw.rect(screen, self.getColour(), self.rect)
         
-        font = pygame.font.SysFont("segoeuisemibold", 48)
-        img = font.render(str(self.value), True, (100, 100, 100))
+        font = pygame.font.SysFont("segoeuisemibold", CONSTANTS.TEXT_SIZE_1)
+        img = font.render(str(self.value), True, CONSTANTS.TEXT_COLOUR)
         
         if (self.value != CONSTANTS.TILE_DEFAULT_VALUE):
             screen.blit(img, (self.rect.centerx - img.get_width() / 2, self.rect.centery - img.get_height() / 2))

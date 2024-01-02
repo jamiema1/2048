@@ -34,23 +34,23 @@ class Board:
         pygame.draw.rect(screen, CONSTANTS.BOARD_COLOUR, self.rect)
         
         # Score Text
-        font = pygame.font.SysFont("segoeuisemibold", 32)
-        img = font.render("Score", True, (100, 100, 100))
+        font = pygame.font.SysFont("segoeuisemibold", CONSTANTS.TEXT_SIZE_2)
+        img = font.render("Score", True, CONSTANTS.TEXT_COLOUR)
         screen.blit(img, (CONSTANTS.SCORE_CENTER_X - img.get_width() / 2, CONSTANTS.SCORE_TEXT_CENTER_Y - img.get_height() / 2))
         
         # Score Value
-        font = pygame.font.SysFont("segoeuisemibold", 48)
-        img = font.render(str(self.score), True, (100, 100, 100))
+        font = pygame.font.SysFont("segoeuisemibold", CONSTANTS.TEXT_SIZE_1)
+        img = font.render(str(self.score), True, CONSTANTS.TEXT_COLOUR)
         screen.blit(img, (CONSTANTS.SCORE_CENTER_X - img.get_width() / 2, CONSTANTS.SCORE_CENTER_Y - img.get_height() / 2))
         
         # High Score Text
-        font = pygame.font.SysFont("segoeuisemibold", 32)
-        img = font.render("High Score", True, (100, 100, 100))
+        font = pygame.font.SysFont("segoeuisemibold", CONSTANTS.TEXT_SIZE_2)
+        img = font.render("High Score", True, CONSTANTS.TEXT_COLOUR)
         screen.blit(img, (CONSTANTS.HIGH_SCORE_CENTER_X - img.get_width() / 2, CONSTANTS.SCORE_TEXT_CENTER_Y - img.get_height() / 2))
         
         # High Score Value
-        font = pygame.font.SysFont("segoeuisemibold", 48)
-        img = font.render(str(self.highScore), True, (100, 100, 100))
+        font = pygame.font.SysFont("segoeuisemibold", CONSTANTS.TEXT_SIZE_1)
+        img = font.render(str(self.highScore), True, CONSTANTS.TEXT_COLOUR)
         screen.blit(img, (CONSTANTS.HIGH_SCORE_CENTER_X - img.get_width() / 2, CONSTANTS.SCORE_CENTER_Y - img.get_height() / 2))
         
         # Tiles
