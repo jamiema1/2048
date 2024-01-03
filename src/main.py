@@ -17,15 +17,33 @@ clock=pygame.time.Clock()
 
 screen: pygame.Surface = pygame.display.set_mode((CONSTANTS.SCREEN_WIDTH, CONSTANTS.SCREEN_HEIGHT))
 
-
 board: Board.Board = Board.Board(CONSTANTS.TILE_COUNT)
-menu: Menu.Menu = Menu.Menu()
 
 menuButton: Button.Button = Button.Button(CONSTANTS.MENU_BUTTON_CENTER_X - CONSTANTS.MENU_BUTTON_WIDTH / 2,
                                           CONSTANTS.MENU_BUTTON_CENTER_Y - CONSTANTS.MENU_BUTTON_HEIGHT / 2,
                                           CONSTANTS.MENU_BUTTON_WIDTH,
                                           CONSTANTS.MENU_BUTTON_HEIGHT,
-                                          "Menu")
+                                          "MENU")
+
+restartButton: Button.Button = Button.Button(CONSTANTS.MENU_CENTER_X - CONSTANTS.MENU_BUTTON_WIDTH / 2,
+                                             CONSTANTS.MENU_CENTER_Y - CONSTANTS.MENU_BUTTON_HEIGHT / 2 - CONSTANTS.BUTTON_PADDING,
+                                             CONSTANTS.MENU_BUTTON_WIDTH,
+                                             CONSTANTS.MENU_BUTTON_HEIGHT,
+                                             "RESTART")
+        
+quitButton: Button.Button = Button.Button(CONSTANTS.MENU_CENTER_X - CONSTANTS.MENU_BUTTON_WIDTH / 2,
+                                          CONSTANTS.MENU_CENTER_Y - CONSTANTS.MENU_BUTTON_HEIGHT / 2 + CONSTANTS.BUTTON_PADDING,
+                                          CONSTANTS.MENU_BUTTON_WIDTH,
+                                          CONSTANTS.MENU_BUTTON_HEIGHT,
+                                          "QUIT")
+
+gameOverButton: Button.Button = Button.Button(CONSTANTS.MENU_CENTER_X - CONSTANTS.GAME_OVER_TEXT_WIDTH / 2,
+                                              CONSTANTS.GAME_OVER_TEXT_Y - CONSTANTS.MENU_BUTTON_WIDTH / 2,
+                                              CONSTANTS.GAME_OVER_TEXT_WIDTH,
+                                              CONSTANTS.MENU_BUTTON_HEIGHT,
+                                              "GAME OVER")
+
+menu: Menu.Menu = Menu.Menu([restartButton, quitButton])
 
 def gameloop():
     
@@ -35,7 +53,7 @@ def gameloop():
     run: bool = True
     prevKey: int = None
     isMenuOpen: bool = False
-    isGameOver: bool = True
+    isGameOver: bool = False
     
     while run:
         
@@ -49,9 +67,8 @@ def gameloop():
         menuButton.draw(screen)
         
         if isGameOver:
-            board.resetBoard() 
-            board.addTile()
-            isGameOver = False
+            gameOverButton.draw(screen)
+            isMenuOpen = True
             
         if isMenuOpen:
             menu.draw(screen)
@@ -61,16 +78,17 @@ def gameloop():
                 run = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if menuButton.mouseIsOverButton(mousePosition):
-                    isMenuOpen = not isMenuOpen
-                elif menu.getQuitButton().mouseIsOverButton(mousePosition):
+                    isMenuOpen = True
+                elif not menu.mouseIsOver(mousePosition):
+                    isMenuOpen = False
+                elif quitButton.mouseIsOverButton(mousePosition):
                     run = False
-                elif menu.getRestartButton().mouseIsOverButton(mousePosition):   
+                elif restartButton.mouseIsOverButton(mousePosition):   
                     isMenuOpen = False
                     isGameOver = False
                     board.resetBoard() 
                     board.addTile()
                     
-                
             if isMenuOpen:
                 break
             if event.type == pygame.KEYUP:
@@ -94,8 +112,6 @@ def gameloop():
                     board.addTile()
                     isGameOver = board.isFull()
                     
-                    
-                
         clock.tick(CONSTANTS.FPS)
         pygame.display.update()
     
